@@ -6,15 +6,14 @@
     <title>WanderLust</title>
 </head>
 <body>
-    <h3><%= listing.title %></h3>
-    <br>
-    <uL>
+    <h2><%= listing.title %></h2>
+    <uL style="margin: 15px; padding: 10px; line-height: 32px; ">
         <li><%= listing.description %></li>
-        <img src="<%= listing.image %>" width="250px"></img>
+        <img style="margin: 10px 10px 10px 100px; display: flex; position: fixed; left: 780px; top: 1px;" src="<%= listing.image.url %>" width="520px"></img>
         <li><%= listing.location %></li>
         <li><%= listing.country %></li>
     </uL>
-    <h4>&#8377; <%= listing.price.toLocaleString("en-IN") %></h4>
+    <h4 style="color: rgb(19, 145, 19);">&#8377; <%= listing.price.toLocaleString("en-IN") %></h4>
     <br>
     <a href="/listings/<%=listing._id%>/edit">edit details</a>
 </body>

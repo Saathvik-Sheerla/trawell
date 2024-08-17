@@ -8,10 +8,10 @@
 <body>
     <h3>Edit Listing details</h3>
 
-    <form method="POST" action="/listings<%= listings._id %>?_method=PUT" >
+    <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" >
         <input name="listing[title]" type="text" value="<%= listing.title %>"><br><br>
-        <textarea name="listing[description]" value="<%= listing.description %>" rows="10" cols="25"></textarea><br><br>
-        <input name="listing[image]" type="text" value="<%= listing.image.url %>"><br><br>
+        <textarea name="listing[description]" rows="10" cols="60"><%= listing.description %></textarea><br><br>
+        <input name="listing[image][url]" type="text" value="<%= listing.image.url %>"><br><br>
         <input name="listing[price]" type="number" value="<%= listing.price %>"><br><br>
         <input name="listing[location]" type="text" value="<%= listing.location %>"><br><br>
         <input name="listing[country]" type="text" value="<%= listing.country %>"><br><br>
