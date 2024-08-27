@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const app = express();
 const ejs = require('ejs');
+const ejsMate = require('ejs-mate');
 const path = require('path');
 const mongoose = require('mongoose');
 const Listing = require('./models/listing.js');
@@ -16,11 +17,13 @@ app.use(
 const port = 8080;
 app.set('view engine','ejs');
 app.set('views', path.join(__dirname,'views'));
+app.use(express.static(path.join(__dirname,'/public')));
 app.set(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
+app.engine('ejs',ejsMate);
 
 app.listen(port, ()=>{
-    console.log("Listening on http://localhost:",port);
+    console.log(`Listening on http://localhost:${port}`);
 });
 
 
@@ -76,4 +79,12 @@ app.put('/listings/:id', async (req,res)=>{
     await Listing.findByIdAndUpdate(id,req.body.listing);
     res.redirect(`/listings/${id}`);
 });
+
+//delete route
+app.delete('/listings/:id', async (req,res)=>{
+    await Listing.findByIdAndDelete(req.params.id);
+    res.redirect('/listings');
+});
+
+
 
