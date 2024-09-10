@@ -2,6 +2,7 @@
 <body>
 
     <div class="index-container">
+        
         <% for(let listing of alllistings){ %>
             <a class="card-link" href="/listings/<%= listing._id %>" >
                 <div class="card" style="width: 17.5rem; margin: 1.3rem;">
@@ -20,10 +21,4 @@
             </a>
         <%}%>
     </div>
-
-    <ul>
-        <% for(let listing of alllistings){ %>
-            <li><a href="/listings/<%= listing._id %>"><%= listing.title %></a></li>
-        <%}%>
-    </ul>
 </body>
