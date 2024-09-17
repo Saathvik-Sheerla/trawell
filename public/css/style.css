@@ -1,3 +1,5 @@
+
+
 body{
     font-family: "Plus Jakarta Sans", sans-serif !important;
     display: flex;
@@ -137,11 +139,13 @@ body{
 
 .showpage-container{
     display: flex;
+    flex-wrap: wrap;
 }
 
 .showpage-body{
     display: flex;
     flex-wrap: wrap;
+    float: right;
 }
 
 .showpage-btns-div{

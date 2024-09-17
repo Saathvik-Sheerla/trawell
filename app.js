@@ -5,11 +5,24 @@ const ejs = require('ejs');
 const ejsMate = require('ejs-mate');
 const path = require('path');
 const mongoose = require('mongoose');
-const Listing = require('./models/listing.js');
+const session = require('express-session');
+const flash = require('connect-flash');
+
 const methodOverride = require('method-override');
-const wrapAsync = require('./utils/wrapAsync.js')
+
 const expressError = require('./utils/expressError.js')
-const {ListingSchema} = require('./schema.js');
+
+
+async function main(){
+    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
+}
+main().then(()=>{
+    console.log("database connected DB");
+}).catch((err)=>{
+    console.log(err);
+});
+
+
 app.use(bodyParser.json());
 app.use(
     bodyParser.urlencoded({
@@ -25,82 +38,42 @@ app.set(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.engine('ejs',ejsMate);
 
-
-async function main(){
-    await mongoose.connect('mongodb://127.0.0.1:27017/wanderlust');
-}
-main().then(()=>{
-    console.log("database connected DB");
-}).catch((err)=>{
-    console.log(err);
-});
+const listingsRoute = require('./routes/listing.js');
+const reviewsRoute = require('./routes/review.js');
 
 
-const validateListing = (req,res,next)=>{
-    let {error} = ListingSchema.validate(req.body);
-
-    if(error){
-        let errMsg = error.details.map((el) => el.message).join(',');
-        throw new expressError(400, errMsg)
-    } else{
-        next();
+const sessionOptions = {
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() * 7 * 24 * 60 * 60 * 1000,
+        maxAge:  7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,
     }
 }
-
 
 app.get('/',(req,res)=>{
     res.send("Home page");
 });
 
-//index route
-app.get('/listings', wrapAsync( async (req,res)=>{
-    const alllistings = await Listing.find({});
-    res.render('listings/index.ejs', {alllistings});
-    }
-));
+app.use(session(sessionOptions));
+app.use(flash());
 
-//crete new listing
-app.get('/listings/new', (req,res)=>{
-    res.render('listings/new.ejs');
+app.use((req,res,next)=>{
+    res.locals.success = req.flash('success');
+    res.locals.deletee = req.flash('deletee');
+    res.locals.update = req.flash('update');
+    res.locals.errorr = req.flash('errorr');
+    next();
 });
 
-//create route
-app.post('/listings', validateListing, wrapAsync( async (req,res)=>{
-        console.log(req.body);
-        await Listing.insertMany(req.body.listing);
-        res.redirect('/listings');
-    }
-));
+//listings
+app.use('/listings', listingsRoute);
 
-//show route
-app.get('/listings/:id', wrapAsync( async (req,res)=>{
-    const listing = await Listing.findById((req.params).id);
-    res.render('listings/show.ejs', {listing});
-    }
-));
 
-//edit route
-app.get('/listings/:id/edit', wrapAsync( async (req,res)=>{
-    let {id} = req.params;
-    const listing = await Listing.findById(id);
-    res.render('listings/edit.ejs', {listing});
-    }
-));
-
-//update route
-app.put('/listings/:id', validateListing, wrapAsync( async (req,res)=>{
-    let {id} = req.params;
-    await Listing.findByIdAndUpdate(id,req.body.listing);
-    res.redirect(`/listings/${id}`);
-    }
-));
-
-//delete route
-app.delete('/listings/:id', wrapAsync( async (req,res)=>{
-    await Listing.findByIdAndDelete(req.params.id);
-    res.redirect('/listings');
-    }
-));
+//reviews
+app.use('/listings/:id/reviews', reviewsRoute);
 
 
 app.all('*', (req,res,next)=>{

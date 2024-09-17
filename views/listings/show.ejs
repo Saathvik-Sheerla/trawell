@@ -31,6 +31,61 @@
                 </div>
             </div>
         </div>
+
+        
+        <div class="showpage-review-container mb-3"><hr style="margin: 0 0 3rem 0;">
+            
+            <div class="showpage-review-form">
+                <h5>Leave a Review</h5>
+                <form method="post" action="/listings/<%=listing._id%>/reviews" class="needs-validation" novalidate>
+
+                <div>
+                    <label for="rating" class="form-label">Rate out of 10!</label>
+                    <input type="number " min="1" max="10" name="review[rating]" class="form-control" required>
+                    <div class="invalid-feedback">please provide some rating</div>
+                </div>
+
+                <div>
+                    <label for="comment" class="form-label">comment:</label>
+                    <textarea name="review[comment]" id="comment" rows="5" cols="60" class="form-control">This is great!!</textarea>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
+                </div>
+
+                </form>
+            </div>
+            
+            <hr>
+            <div class="mt-5 mb-3">
+                <h3>Reviews</h3>
+                <ul style="line-height: 2rem; margin: 2rem 0 2rem 0; display: flex; flex-wrap: wrap; justify-content: center;">
+                    <% for(let review of listing.reviews) { %>
+                        <% let stars = review.rating %>
+                        <li style="list-style: none; border-radius: 2%; box-shadow: 2px black; margin: 0 0.8rem 0.8rem 0; font-size: 1.1rem; padding: 1rem;
+                        box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between;
+                        ">
+                            <div>
+                                <%= review.comment %>, <b><%= stars %></b> <br>
+                                <div style="padding: 0.15rem;">
+                                    <% for(let i=0; i < stars ; i++) { %>
+                                        <i class="fa-solid fa-star" style="font-size: 1.4rem; color: gold;" ></i>
+                                    <% } %>
+                                    <% for(let i=10; i > stars ; i--) { %>
+                                        <i class="fa-regular fa-star" style="font-size: 1.15rem; color: goldenrod; " ></i>
+                                    <% } %>
+                                </div>
+                            </div>
+                            <form method="post" action="/listings/<%=listing._id%>/reviews/<%= review._id %>?_method=delete" style="display: inline;">
+                                <button type="submit" class="btn btn-danger" style="display: inline-block !important; font-size: 0.8rem ; margin: 0 0 0 1rem; ">delete</button>
+                            </form>
+                        </li>
+                    <% } %>
+                </ul>
+            </div>
+
+        </div>
     </div>
 
 </body>
