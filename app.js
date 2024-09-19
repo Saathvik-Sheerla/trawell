@@ -7,6 +7,9 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 const flash = require('connect-flash');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
+const User = require('./models/user.js');
 
 const methodOverride = require('method-override');
 
@@ -38,8 +41,9 @@ app.set(express.urlencoded({extended: true}));
 app.use(methodOverride('_method'));
 app.engine('ejs',ejsMate);
 
-const listingsRoute = require('./routes/listing.js');
-const reviewsRoute = require('./routes/review.js');
+const listingsRouter = require('./routes/listing.js');
+const reviewsRouter = require('./routes/review.js');
+const userRouter = require('./routes/user.js');
 
 
 const sessionOptions = {
@@ -60,6 +64,13 @@ app.get('/',(req,res)=>{
 app.use(session(sessionOptions));
 app.use(flash());
 
+app.use(passport.initialize());
+app.use(passport.session());
+
+passport.use(new LocalStrategy(User.authenticate()));
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
 app.use((req,res,next)=>{
     res.locals.success = req.flash('success');
     res.locals.deletee = req.flash('deletee');
@@ -68,12 +79,16 @@ app.use((req,res,next)=>{
     next();
 });
 
-//listings
-app.use('/listings', listingsRoute);
 
+//users
+app.use('/', userRouter);
+
+//listings
+app.use('/listings', listingsRouter);
 
 //reviews
-app.use('/listings/:id/reviews', reviewsRoute);
+app.use('/listings/:id/reviews', reviewsRouter);
+
 
 
 app.all('*', (req,res,next)=>{
