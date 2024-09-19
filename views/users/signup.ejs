@@ -1,0 +1,29 @@
+<% layout('layouts/boilerplate.ejs') %>
+
+<div style="height: 100%;">
+    <div class="col-4 offset-4 mt-3" >
+        <h2 style="font-size: 2.8rem;">Signup on <span style="color: red; display: inline; font-size: 3rem;" >Trawelh</span></h2>
+        <form action="/signup" method="post" novalidate style="margin: 2rem 0 0 0;">
+            <div class="mb-3">
+                <label for="username" class="form-label" >Name</label>
+                <input name="user[username]" type="text" class="form-control" required>
+                <div class="valid-feedback">it's unique!</div>
+                <div class="invalid-feedback">Please enter a username</div>
+            </div>
+    
+            <div class="mb-3" >
+                <label for="email" class="form-label" >Email</label>
+                <input name="user[email]" type="email" class="form-control" >
+            </div>
+
+            <div class="mb-3" ></div>
+                <label for="password" class="form-label" >Password</label>
+                <input name="user[password]" type="password" class="form-control" required>
+            </div>
+
+            <div>
+                <button class="btn btn-danger offset-4 mt-3">signup</button>
+            </div>
+        </form>
+    </div>
+</div>
