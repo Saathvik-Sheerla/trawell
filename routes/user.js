@@ -10,13 +10,13 @@ router.get('/signup', (req,res)=>{
 
 router.post('/signup', wrapAsync( async(req,res)=>{
     try{
-        let {username, email, password} = req.body.user;
+        let {username, email, password} = req.body;
         const newUser = new User({email, username});
         await User.register(newUser, password);
         req.flash("success", `Hi ${username}, Welcome to Trawelh!`);
         res.redirect('/listings');
     } catch(err){
-        req.flash('errorr', `username with '${req.body.user.username}' already exists try another name`);
+        req.flash('errorr', `username with '${req.body.username}' already exists try another name`);
         res.redirect('/signup');
     }
 }));
@@ -26,10 +26,22 @@ router.get('/login', (req,res)=>{
 });
 
 router.post('/login',
-    passport.authenticate('local', {failureRedirect: 'login', failureFlash: true}),
-    async (req, res)=>{
-        res.send("logged-in");
-    }
+        passport.authenticate('local', 
+            {failureFlash: true, failureRedirect: '/login'}),
+        async (req, res)=>{
+            req.flash("success", `Welcome back ${req.body.username}`);
+            res.redirect('/listings');
+        }
 );
+
+router.get('/logout', (req,res,next)=>{
+    req.logout((err)=>{
+        if(err){
+            return next(err);
+        }
+        req.flash('deletee', 'You are logged out!');
+        res.redirect('/listings');
+    });
+});
 
 module.exports = router;
