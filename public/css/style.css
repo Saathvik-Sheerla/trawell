@@ -127,14 +127,14 @@ body{
 /* show page */
 
 .showpage-img{
-    border-radius: 5% !important;
+    margin: 1rem 2rem 1rem 8rem;
     width: auto !important;
-    height: auto !important;
-    margin: 1.2rem;
+    height: 65% !important;
+    border-radius: 5% !important;
 }
 
 .showpage-img-card{
-    margin: 0 0 5rem 0 !important;
+    margin: 0 0 3rem 0 !important;
 }
 
 .showpage-container{
@@ -143,9 +143,11 @@ body{
 }
 
 .showpage-body{
+    width: 48% !important;
     display: flex;
     flex-wrap: wrap;
     float: right;
+    justify-content: center;
 }
 
 .showpage-btns-div{
@@ -157,4 +159,3 @@ body{
 .showpage-details{
     margin: 2rem;
 }
-

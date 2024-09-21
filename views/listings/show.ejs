@@ -3,59 +3,67 @@
 
     <div class="showpage-container ">
         
-        <div class="showpage-text">
+        <div class="showpage-text" style="width: 40%;">
             <div class="showpage-title mt-2">
                 <h2><%= listing.title %></h2>
+                <h4><%= listing.owner.username %></h4>
             </div>
     
-            <div class="showpage-details">
-                <uL style="margin: 1.1rem; padding: 10px; line-height: 32px; ">
+            <div class="showpage-details" style="width: 50%;">
+                <uL style="margin: 1.1rem; padding: 2px; line-height: 32px; width: 100%;">
                     <li><%= listing.location %></li>
                     <li><%= listing.country %></li>
+                    <li>
+                        <div>
+                            <p class="card-text " style=" font-weight: 500;"><%= listing.description %></p>
+                        </div>
+                    </li>
                 </uL>
                 <h4 style="color: rgb(19, 145, 19); margin: 0 0 0 0.8rem; font-size: 1.8rem; font-weight: 600; font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;">&#8377; <%= listing.price.toLocaleString("en-IN") %></h4>
                 <br>
     
-                <div class="showpage-btns-div">
-                    <a style="width: 4rem; margin: 0 1rem 1rem 0;" class="btn btn-primary" href="/listings/<%=listing._id%>/edit">Edit</a>
-                    <form method="post" action="/listings/<%=listing._id%>?_method=delete"><button class="btn btn-danger">Delete</button></form>
-                </div>
+                <% if(currUser && (currUser._id).equals(listing.owner._id)) { %>
+                    <div class="showpage-btns-div">
+                        <a style="width: 4rem; margin: 0 1rem 1rem 0;" class="btn btn-primary" href="/listings/<%=listing._id%>/edit">Edit</a>
+                        <form method="post" action="/listings/<%=listing._id%>?_method=delete"><button class="btn btn-danger">Delete</button></form>
+                    </div>
+                <% } %>
             </div>
         </div>
 
         <div class="showpage-body col-8">
             <div class="card showpage-img-card" >
                 <img src="<%= listing.image.url %>" class="card-img-top showpage-img" alt="listing_image">
-                <div class="card-body">
-                    <p class="card-text m-2 " style="padding-left: 2rem; font-weight: 500;"><%= listing.description %></p>
-                </div>
+                
             </div>
         </div>
 
         
-        <div class="showpage-review-container mb-3"><hr style="margin: 0 0 3rem 0;">
+        <div class="showpage-review-container mb-3"><hr>
             
-            <div class="showpage-review-form">
-                <h5>Leave a Review</h5>
-                <form method="post" action="/listings/<%=listing._id%>/reviews" class="needs-validation" novalidate>
-
-                <div>
-                    <label for="rating" class="form-label">Rate out of 10!</label>
-                    <input type="number " min="1" max="10" name="review[rating]" class="form-control" required>
-                    <div class="invalid-feedback">please provide some rating</div>
+            <% if(currUser) { %>
+                <div class="showpage-review-form mt-5">
+                    <h5>Leave a Review</h5>
+                    <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 2rem;" class="needs-validation" novalidate >
+    
+                    <div>
+                        <label for="rating" class="form-label">Rate out of 10!</label>
+                        <input type="number " min="1" max="10" name="review[rating]" class="form-control" required>
+                        <div class="invalid-feedback">please provide some rating</div>
+                    </div>
+    
+                    <div>
+                        <label for="comment" class="form-label" style="margin: 1.5rem 0 1rem 0;">Comment</label>
+                        <textarea name="review[comment]" id="comment" rows="5" cols="60" class="form-control mb-2">This is great!!</textarea>
+                    </div>
+    
+                    <div>
+                        <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
+                    </div>
+    
+                    </form>
                 </div>
-
-                <div>
-                    <label for="comment" class="form-label">comment:</label>
-                    <textarea name="review[comment]" id="comment" rows="5" cols="60" class="form-control">This is great!!</textarea>
-                </div>
-
-                <div>
-                    <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
-                </div>
-
-                </form>
-            </div>
+            <% } %>
             
             <hr>
             <div class="mt-5 mb-3">
@@ -67,6 +75,7 @@
                         box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between;
                         ">
                             <div>
+                                <div style="font-size: 1rem; width: fit-content; height: fit-content;">@<%= review.author.username %></div>
                                 <%= review.comment %>, <b><%= stars %></b> <br>
                                 <div style="padding: 0.15rem;">
                                     <% for(let i=0; i < stars ; i++) { %>
@@ -78,7 +87,8 @@
                                 </div>
                             </div>
                             <form method="post" action="/listings/<%=listing._id%>/reviews/<%= review._id %>?_method=delete" style="display: inline;">
-                                <button type="submit" class="btn btn-danger" style="display: inline-block !important; font-size: 0.8rem ; margin: 0 0 0 1rem; ">delete</button>
+                                <button type="submit" class="btn btn-danger" style="display: inline-block !important; font-size: 0.8rem ; margin: 0 0 0 1rem; "
+                                >delete</button>
                             </form>
                         </li>
                     <% } %>

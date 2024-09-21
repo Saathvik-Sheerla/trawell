@@ -22,12 +22,18 @@ const listingSchema = new schema({
     price: Number,
     location: String,
     country: String,
+
     reviews: [
         {
             type: schema.Types.ObjectId,
             ref: 'Review',
         },
     ],
+
+    owner: {
+        type: schema.Types.ObjectId,
+        ref: 'User',
+    }
 });
 
 

@@ -76,8 +76,9 @@ app.use((req,res,next)=>{
     res.locals.deletee = req.flash('deletee');
     res.locals.update = req.flash('update');
     res.locals.errorr = req.flash('errorr');
-
+    res.locals.error = req.flash('error');
     res.locals.currUser = req.user;
+    res.locals.isReviewAuthor = true;
     next();
 });
 
