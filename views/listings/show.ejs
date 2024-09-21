@@ -43,13 +43,24 @@
             
             <% if(currUser) { %>
                 <div class="showpage-review-form mt-5">
-                    <h5>Leave a Review</h5>
+                    <h3>Leave a Review</h3>
                     <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 2rem;" class="needs-validation" novalidate >
     
                     <div>
-                        <label for="rating" class="form-label">Rate out of 10!</label>
-                        <input type="number " min="1" max="10" name="review[rating]" class="form-control" required>
-                        <div class="invalid-feedback">please provide some rating</div>
+                        <fieldset class="starability-growRotate">
+                            <legend>Rating:</legend>
+                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                            <label for="first-rate1" title="Terrible">1 star</label>
+                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                            <label for="first-rate2" title="Not good">2 stars</label>
+                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                            <label for="first-rate3" title="Average">3 stars</label>
+                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                            <label for="first-rate4" title="Very good">4 stars</label>
+                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                            <label for="first-rate5" title="Amazing">5 stars</label>
+                        </fieldset>
                     </div>
     
                     <div>
@@ -75,15 +86,10 @@
                         box-shadow: 0 0.2rem 0.2rem rgba(0, 0, 0, 0.2); display: flex; justify-content: space-between;
                         ">
                             <div>
-                                <div style="font-size: 1rem; width: fit-content; height: fit-content;">@<%= review.author.username %></div>
-                                <%= review.comment %>, <b><%= stars %></b> <br>
-                                <div style="padding: 0.15rem;">
-                                    <% for(let i=0; i < stars ; i++) { %>
-                                        <i class="fa-solid fa-star" style="font-size: 1.4rem; color: gold;" ></i>
-                                    <% } %>
-                                    <% for(let i=10; i > stars ; i--) { %>
-                                        <i class="fa-regular fa-star" style="font-size: 1.15rem; color: goldenrod; " ></i>
-                                    <% } %>
+                                <div style="font-size: 1rem; width: fit-content; height: fit-content; margin: 1rem 0 0 0;">@<%= review.author.username %></div>
+                                <div>
+                                    <p class="starability-result" data-rating="<%= review.rating %>"></p>
+                                    <%= review.comment %>
                                 </div>
                             </div>
                             <form method="post" action="/listings/<%=listing._id%>/reviews/<%= review._id %>?_method=delete" style="display: inline;">
