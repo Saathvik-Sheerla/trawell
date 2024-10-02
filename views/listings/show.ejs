@@ -1,4 +1,8 @@
 <% layout('layouts/boilerplate.ejs') %>
+<script>
+    const mapToken = '<%= process.env.MAP_Token %>';
+    const coordinates = <%- JSON.stringify(listing.geometry.coordinates) %>
+</script>
 <body>
 
     <div class="showpage-container ">
@@ -37,46 +41,51 @@
                 
             </div>
         </div>
+    </div>
 
-        
-        <div class="showpage-review-container mb-3"><hr>
-            
-            <% if(currUser) { %>
-                <div class="showpage-review-form mt-5">
-                    <h3>Leave a Review</h3>
-                    <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 2rem;" class="needs-validation" novalidate >
+    <div id="map">
+        <h3 class="mb-3">Where you'll be</h3>
+        <script src="/scripts/map.js"></script>
+    </div>
     
-                    <div>
-                        <fieldset class="starability-growRotate">
-                            <legend>Rating:</legend>
-                            <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
-                            <input type="radio" id="first-rate1" name="review[rating]" value="1" />
-                            <label for="first-rate1" title="Terrible">1 star</label>
-                            <input type="radio" id="first-rate2" name="review[rating]" value="2" />
-                            <label for="first-rate2" title="Not good">2 stars</label>
-                            <input type="radio" id="first-rate3" name="review[rating]" value="3" />
-                            <label for="first-rate3" title="Average">3 stars</label>
-                            <input type="radio" id="first-rate4" name="review[rating]" value="4" />
-                            <label for="first-rate4" title="Very good">4 stars</label>
-                            <input type="radio" id="first-rate5" name="review[rating]" value="5" />
-                            <label for="first-rate5" title="Amazing">5 stars</label>
-                        </fieldset>
-                    </div>
-    
-                    <div>
-                        <label for="comment" class="form-label" style="margin: 1.5rem 0 1rem 0;">Comment</label>
-                        <textarea name="review[comment]" id="comment" rows="5" cols="60" class="form-control mb-2">This is great!!</textarea>
-                    </div>
-    
-                    <div>
-                        <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
-                    </div>
-    
-                    </form>
+    <div>
+        <% if(currUser) { %>
+            <div class="showpage-review-form " style="margin: 1rem 0 0 2rem;">
+                <h3>Leave a Review</h3>
+                <form method="post" action="/listings/<%=listing._id%>/reviews" style="margin: 2rem 0 0 2rem;" class="needs-validation" novalidate >
+
+                <div>
+                    <fieldset class="starability-growRotate">
+                        <legend>Rating:</legend>
+                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                        <label for="first-rate1" title="Terrible">1 star</label>
+                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                        <label for="first-rate2" title="Not good">2 stars</label>
+                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                        <label for="first-rate3" title="Average">3 stars</label>
+                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                        <label for="first-rate4" title="Very good">4 stars</label>
+                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                        <label for="first-rate5" title="Amazing">5 stars</label>
+                    </fieldset>
                 </div>
-            <% } %>
-            
-            <hr>
+
+                <div>
+                    <label for="comment" class="form-label" style="margin: 1.5rem 0 1rem 0;">Comment</label>
+                    <textarea name="review[comment]" id="comment" rows="5" cols="30" class="form-control mb-2">This is great!!</textarea>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary mt-3 mb-3" >save</button>
+                </div>
+
+                </form>
+            </div>
+        <% } %>
+        
+        
+        <% if(listing.reviews.length > 0) { %>
             <div class="mt-5 mb-3">
                 <h3>Reviews</h3>
                 <ul style="line-height: 2rem; margin: 2rem 0 2rem 0; display: flex; flex-wrap: wrap; justify-content: center;">
@@ -100,8 +109,8 @@
                     <% } %>
                 </ul>
             </div>
+        <% } %>
 
-        </div>
     </div>
 
 </body>

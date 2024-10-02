@@ -34,7 +34,12 @@ module.exports.renderLoginForm = (req,res)=>{
 module.exports.loginUser = async (req, res)=>{
         req.flash("success", `Welcome back ${req.body.username}`);
         let redirectUrl = res.locals.redirectUrl || '/listings'; //taking care incase of undefined
-        res.redirect('/listings');
+        try{
+            res.redirect(redirectUrl);
+        } catch(err){
+            req.flash('errorr', 'are you trying to crash our site!?');
+            res.redirect('/listings');
+        }
     };
 
 

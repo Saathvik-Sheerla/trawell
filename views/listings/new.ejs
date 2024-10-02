@@ -2,7 +2,7 @@
 <div class="row">
     <div class="col-8 offset-2">
         <h3 style="margin: 2.5rem 0 2rem 0;">New Listing</h3>
-        <form method="POST" action="/listings" novalidate class="needs-validation">
+        <form method="POST" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
             <div class="mb-3" >
                 <label for="title" class="form-label" >Title</label>
                 <input name="listing[title]" type="text" placeholder="name of the listing" class="form-control" required>
@@ -13,10 +13,16 @@
                 <label for="description" class="form-label" >Description</label>
                 <textarea name="listing[description]" rows="5" cols="60" class="form-control" placeholder="about the listing"></textarea>
             </div>
-            <div class="mb-3" >
+
+            <!-- <div class="mb-3" >
                 <label for="image" class="form-label" >Image Url</label>
-                <input name="listing[image][url]" type="text" class="form-control" placeholder="enter image url/link">
+                <input name="listing[image][urlRemote]" type="text" class="form-control" placeholder="enter image url/link">
+            </div> -->
+            <div class="mb-3" >
+                <label for="image" class="form-label" >Upload Image</label>
+                <input name="listing[image][url]" type="file" class="form-control" placeholder="enter image url/link">
             </div>
+
 
             <div class="row">
                 <div class="mb-3 col-md-4" >

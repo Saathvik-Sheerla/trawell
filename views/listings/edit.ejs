@@ -3,7 +3,7 @@
     <div class="row">
         <div class="col-8 offset-2">
             <h3 style="margin: 2rem 0 2rem 0;">Edit Listing details</h3>
-            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" >
+            <form method="POST" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation" enctype="multipart/form-data" >
                 <div class="mb-3" >
                     <label for="title" class="form-label" >Title</label>
                     <input name="listing[title]" type="text" value="<%= listing.title %>" placeholder="name of the listing" class="form-control" required>
@@ -15,9 +15,20 @@
                     <label for="description" class="form-label" >Description</label>
                     <textarea name="listing[description]" rows="5" cols="60" class="form-control" placeholder="about the listing"><%= listing.description %></textarea>
                 </div>
-                <div class="mb-3" >
+
+                <div class="mb-4" >
+                    <legend for="image" style="font-size: 1rem;">Original Image</legend>
+                    <img src="<%= originalImageUrl %>" alt="org_img" >
+                </div>
+                
+                <!-- <div class="mb-3" >
                     <label for="image" class="form-label" >Image Url</label>
                     <input name="listing[image][url]" type="text" class="form-control" value="<%= listing.image.url %>" placeholder="enter image url/link" required>
+                </div> -->
+
+                <div class="mb-3" >
+                    <label for="image" class="form-label" >Upload Image</label>
+                    <input name="listing[image][url]" type="file" class="form-control" placeholder="enter image url/link">
                 </div>
     
                 <div class="row">
